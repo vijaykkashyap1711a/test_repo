@@ -21,10 +21,13 @@ jobs:
       - name: Confirm AWS identity
         run: aws sts get-caller-identity
 
-      - name: Confirm EKS cluster access
+      - name: Confirm configured region
         run: |
-          aws eks describe-cluster \
-            --name ecommerce-demo \
-            --region "${{ vars.AWS_REGION }}" \
-            --query 'cluster.{Name:name,Status:status,Version:version}' \
+          echo "Configured region: $AWS_REGION"
+          aws configure get region
+
+      - name: List AWS regions
+        run: |
+          aws ec2 describe-regions \
+            --query 'Regions[].RegionName' \
             --output table
