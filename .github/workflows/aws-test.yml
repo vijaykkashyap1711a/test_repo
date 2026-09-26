@@ -22,4 +22,11 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Confirm configured region
-        run: echo "Configured region: $AWS_REGION" 
+        run: |
+          echo "Configured region: $AWS_REGION"
+
+      - name: List AWS regions
+        run: |
+          aws ec2 describe-regions \
+            --query 'Regions[].RegionName' \
+            --output table
